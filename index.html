@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutuj Dhodapkar</title>
+    <style>
+        /* Reset some basic styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f7f7f7;
+            color: #333;
+            padding-top: 60px; /* Add padding to account for fixed header */
+        }
+
+        /* Header section */
+        header {
+            background-color: #fff;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1002; /* Higher than side menu */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: top 0.3s ease;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .nav ul {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav ul li {
+            margin: 5px 10px;
+        }
+
+        .nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .nav ul li a:hover {
+            color: #007BFF;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 1003; /* Higher than side menu */
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease-in-out;
+            z-index: 1001;
+            padding-top: 60px;
+            display: none; /* Hide side menu by default */
+        }
+
+        .side-menu.open {
+            right: 0;
+            display: block; /* Show side menu when open */
+        }
+
+        .side-menu ul {
+            list-style: none;
+            padding: 20px;
+        }
+
+        .side-menu ul li {
+            margin-bottom: 15px;
+        }
+
+        .side-menu ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Hero section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            padding: 60px 20px;
+            min-height: 100vh;
+        }
+
+        .hero-text {
+            max-width: 50%;
+            text-align: left;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero h2 span {
+            font-size: 54px;
+            background: linear-gradient(45deg, #FF00FF, #8A2BE2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #555;
+            margin-top: 20px;
+            line-height: 1.8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 24px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .hero-image {
+            width: 40%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* About Section */
+        .about, .skills, .projects, .contact, .education {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .about {
+            background-color: #f7f7f7;
+        }
+
+        .about h3, .skills h3, .projects h3, .contact h3, .education h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .about p, .skills p, .projects p, .contact p, .education p {
+            font-size: 16px;
+            max-width: 800px;
+            margin: 0 auto 20px;
+            line-height: 1.8;
+        }
+
+        /* Skills Section */
+        .skills {
+            background-color: #fff;
+        }
+
+        .skills-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .skill-item {
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Projects Section */
+        .projects {
+            background-color: #f7f7f7;
+        }
+
+        .project-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .project-item {
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .project-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .project-item h4 {
+            font-size: 20px;
+            margin: 15px 0 10px;
+        }
+
+        .project-item p {
+            font-size: 14px;
+            color: #666;
+            padding: 0 15px 15px;
+        }
+
+        /* Contact Section */
+        .contact {
+            background-color: #fff;
+        }
+
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .contact-buttons a {
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .contact-buttons a:hover {
+            transform: scale(1.05);
+        }
+
+        .contact-buttons a.instagram { background-color: #e1306c; }
+        .contact-buttons a.twitter { background-color: #1DA1F2; }
+        .contact-buttons a.linkedin { background-color: #0077b5; }
+        .contact-buttons a.github { background-color: #333; }
+        .contact-buttons a.email { background-color: #007BFF; }
+
+        /* Education Section */
+        .education {
+            background-color: #f7f7f7;
+        }
+
+        .education-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .education-item {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .education-item h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #007BFF;
+        }
+
+        .education-item p {
+            font-size: 16px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        /* Footer Section */
+        footer {
+            padding: 20px;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #007BFF;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .side-menu {
+                display: none; /* Hide side menu on larger screens */
+            }
+
+            header .nav {
+                display: flex;
+            }
+
+            .side-menu.open {
+                display: none; /* Ensure side menu doesn't display on larger screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <div class="logo">Rutuj</div>
+        <nav class="nav">
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="menu-toggle">&#9776;</div>
+    </header>
+
+    <!-- Side Menu -->
+    <div class="side-menu">
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <h2>Hello there!<br>I'm <span>Rutuj Dhodapkar</span></h2>
+            <p>Welcome to my personal website! Here you can find information about my education, skills, projects, and how to get in touch with me.</p>
+            <a href="#contact" class="cta-button">Get in Touch</a>
+        </div>
+        <img src="path-to-your-image.jpg" alt="Rutuj Dhodapkar" class="hero-image">
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <h3>About Me</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, urna eu tincidunt facilisis, arcu metus vehicula nisi, vel fringilla orci urna nec felis.</p>
+    </section>
+
+    <!-- Education Section -->
+    <section class="education" id="education">
+        <h3>Education</h3>
+        <div class="education-list">
+            <div class="education-item">
+                <h4>Bachelor of Technology in Computer Science</h4>
+                <p>University Name</p>
+                <p>Graduation Year: 20XX</p>
+                <p>GPA: X.XX/4.0</p>
+            </div>
+            <div class="education-item">
+                <h4>High School Diploma</h4>
+                <p>School Name</p>
+                <p>Graduation Year: 20XX</p>
+                <p>GPA: X.XX/4.0</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills" id="skills">
+        <h3>Skills</h3>
+        <div class="skills-list">
+            <div class="skill-item">JavaScript</div>
+            <div class="skill-item">HTML & CSS</div>
+            <div class="skill-item">Python</div>
+            <div class="skill-item">Machine Learning</div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <h3>Projects</h3>
+        <div class="project-list">
+            <div class="project-item">
+                <img src="path-to-your-project-image.jpg" alt="Project 1">
+                <h4>Project Title 1</h4>
+                <p>Description of project 1.</p>
+            </div>
+            <!-- Add more projects as needed -->
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h3>Contact Me</h3>
+        <p>If you'd like to get in touch, feel free to reach out through the links below.</p>
+        <div class="contact-buttons">
+            <a href="https://www.instagram.com/rutujdhodapkar/" class="instagram">Instagram</a>
+            <a href="https://x.com/RutujDhodapkar" class="twitter">Twitter</a>
+            <a href="https://www.linkedin.com/in/rutuj-dhodapkar-80bb5424a/" class="linkedin">LinkedIn</a>
+            <a href="https://github.com/rutujdhodapkar" class="github">GitHub</a>
+            <a href="mailto:rutujdhodapkar@gmail.com" class="email">Email</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Rutuj Dhodapkar. All rights reserved.</p>
+        <p><a href="#about">About</a> | <a href="#education">Education</a> | <a href="#skills">Skills</a> | <a href="#projects">Projects</a> | <a href="#contact">Contact</a></p>
+    </footer>
+
+    <!-- JavaScript for Side Menu Toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sideMenu = document.querySelector('.side-menu');
+
+            menuToggle.addEventListener('click', function() {
+                sideMenu.classList.toggle('open');
+            });
+
+            // Close side menu when clicking outside of it
+            document.addEventListener('click', function(event) {
+                if (!sideMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                    sideMenu.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
